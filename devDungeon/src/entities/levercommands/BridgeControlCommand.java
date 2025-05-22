@@ -1,6 +1,10 @@
 package entities.levercommands;
 
+import core.Game;
+import core.level.Tile;
 import core.level.utils.Coordinate;
+import core.level.utils.LevelElement;
+import systems.FogOfWarSystem;
 import utils.ICommand;
 
 /**
@@ -32,7 +36,17 @@ public class BridgeControlCommand implements ICommand {
    */
   @Override
   public void execute() {
-    // TODO: Implement bridge raising
+      // TODO: Implement bridge raising
+      for (int x = this.topLeft.x; x <= this.bottomRight.x; x++) {
+          for (int y = this.bottomRight.y; y <= this.topLeft.y; y++) {
+              Tile tile = Game.currentLevel().tileAt(new Coordinate(x, y));
+              if (tile == null) return;
+
+//              Game.currentLevel().changeTileElementType(tile, LevelElement.FLOOR);
+//              Tile newTile = Game.currentLevel().tileAt(new Coordinate(x, y));
+//              ((FogOfWarSystem) Game.systems().get(FogOfWarSystem.class)).updateTile(tile, newTile);
+          }
+      }
   }
 
   /**

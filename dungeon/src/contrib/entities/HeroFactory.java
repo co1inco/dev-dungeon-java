@@ -117,6 +117,15 @@ public class HeroFactory {
     registerMovement(
         pc, core.configuration.KeyboardConfig.MOVEMENT_LEFT_SECOND.value(), new Vector2(-1, 0));
 
+    hero.add(new SprintComponent());
+    pc.registerCallback(core.configuration.KeyboardConfig.SHIFT.value(), entity -> {
+        var sc = entity.fetch(SprintComponent.class);
+        if (sc.isPresent()) {
+            System.out.println("sprint");
+            sc.get().StartSprinting();
+        }
+    });
+
     pc.registerCallback(
         KeyboardConfig.INVENTORY_OPEN.value(),
         (e) -> {
@@ -199,16 +208,25 @@ public class HeroFactory {
     pc.registerCallback(
         key,
         entity -> {
+
           VelocityComponent vc =
               entity
                   .fetch(VelocityComponent.class)
                   .orElseThrow(
                       () -> MissingComponentException.build(entity, VelocityComponent.class));
+
+          float speedMultiplier = 10.0f;
+
+          var sc = entity.fetch(SprintComponent.class);
+          if (sc.isPresent() && sc.get().IsSprinting()) {
+              speedMultiplier = 2.0f;
+          }
+
           if (direction.x != 0) {
-            vc.currentXVelocity(direction.x * vc.xVelocity());
+            vc.currentXVelocity(direction.x * vc.xVelocity() * speedMultiplier);
           }
           if (direction.y != 0) {
-            vc.currentYVelocity(direction.y * vc.yVelocity());
+            vc.currentYVelocity(direction.y * vc.yVelocity() * speedMultiplier);
           }
         });
   }

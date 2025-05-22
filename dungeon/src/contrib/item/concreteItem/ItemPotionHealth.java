@@ -8,6 +8,7 @@ import contrib.item.Item;
 import contrib.utils.components.health.Damage;
 import contrib.utils.components.health.DamageType;
 import core.Entity;
+import core.components.VelocityComponent;
 import core.utils.components.draw.Animation;
 import core.utils.components.path.IPath;
 import core.utils.components.path.SimpleIPath;
@@ -82,6 +83,8 @@ public final class ItemPotionHealth extends Item {
   private void healUser(int amount, Entity e) {
     e.fetch(HealthComponent.class)
         .ifPresent(hc -> hc.receiveHit(new Damage(-amount, DamageType.HEAL, null)));
+      e.fetch(VelocityComponent.class)
+          .ifPresent(hc -> hc.xVelocity(hc.xVelocity() * 3));
   }
 
   @Override

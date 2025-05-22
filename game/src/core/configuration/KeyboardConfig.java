@@ -26,6 +26,10 @@ public class KeyboardConfig {
   public static final ConfigKey<Integer> MOVEMENT_RIGHT =
       new ConfigKey<>(new String[] {"movement", "right"}, new ConfigIntValue(Input.Keys.D));
 
+    /** WTF? . */
+    public static final ConfigKey<Integer> SHIFT =
+        new ConfigKey<>(new String[] {"movement", "shift"}, new ConfigIntValue(Input.Keys.SHIFT_LEFT));
+
   public static final ConfigKey<Integer> MOVEMENT_UP_SECOND =
       new ConfigKey<>(new String[] {"movement", "up_second"}, new ConfigIntValue(Input.Keys.UP));
 

@@ -151,18 +151,18 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
   @Override
   public void onTick(boolean isFirstTick) {
     if (isFirstTick) {
-      DialogFactory.showTextPopup(
-          "Wait, who turned off the lights? Try to find a way out of this dark place.",
-          "Level " + DevDungeon.DUNGEON_LOADER.currentLevelIndex() + ": The Illusion Riddle");
+//      DialogFactory.showTextPopup(
+//          "Wait, who turned off the lights? Try to find a way out of this dark place.",
+//          "Level " + DevDungeon.DUNGEON_LOADER.currentLevelIndex() + ": The Illusion Riddle");
 
-      ((ExitTile) this.endTile()).close(); // close exit at start (to force defeating the boss)
-      this.doorTiles().forEach(DoorTile::close);
-      this.pitTiles()
-          .forEach(
-              pit -> {
-                pit.timeToOpen(50L * Game.currentLevel().RANDOM.nextInt(1, 5));
-                pit.close();
-              });
+//      ((ExitTile) this.endTile()).close(); // close exit at start (to force defeating the boss)
+//      this.doorTiles().forEach(DoorTile::close);
+//      this.pitTiles()
+//          .forEach(
+//              pit -> {
+//                pit.timeToOpen(50L * Game.currentLevel().RANDOM.nextInt(1, 5));
+//                pit.close();
+//              });
       this.rooms.forEach(DevDungeonRoom::spawnEntities);
 
       // Create teleporters

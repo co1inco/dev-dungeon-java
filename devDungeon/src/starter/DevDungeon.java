@@ -25,7 +25,7 @@ public class DevDungeon {
             "tutorial", "damagedBridge", "torchRiddle", "illusionRiddle", "bridgeGuard", "finalBoss"
           });
   private static final String BACKGROUND_MUSIC = "sounds/background.wav";
-  private static final boolean SKIP_TUTORIAL = false;
+  private static final boolean SKIP_TUTORIAL = true;
 
   public static void main(String[] args) throws IOException {
     Game.initBaseLogger(Level.WARNING);
