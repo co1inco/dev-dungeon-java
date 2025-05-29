@@ -28,9 +28,15 @@ public class DevDungeon {
   private static final boolean SKIP_TUTORIAL = true;
 
   public static void main(String[] args) throws IOException {
+
+    var initialLevel = "";
+    if (args.length > 0) {
+        initialLevel = args[0];
+    }
+
     Game.initBaseLogger(Level.WARNING);
     configGame();
-    onSetup();
+    onSetup(initialLevel);
 
     Game.userOnLevelLoad(
         (firstTime) -> {
@@ -50,7 +56,7 @@ public class DevDungeon {
     Game.windowTitle("Dev Dungeon");
   }
 
-  private static void onSetup() {
+  private static void onSetup(String initialLevel) {
     Game.userOnSetup(
         () -> {
           LevelSystem levelSystem = (LevelSystem) ECSManagment.systems().get(LevelSystem.class);
@@ -66,10 +72,16 @@ public class DevDungeon {
           }
           setupMusic();
           Crafting.loadRecipes();
-          if (SKIP_TUTORIAL) {
-            DUNGEON_LOADER.loadLevel(DUNGEON_LOADER.levelOrder()[1]); // First Level
-          } else {
-            DUNGEON_LOADER.loadLevel(DUNGEON_LOADER.levelOrder()[0]); // Tutorial
+
+          if (initialLevel != null && !initialLevel.isEmpty()) {
+              DUNGEON_LOADER.loadLevel(initialLevel.toLowerCase());
+          }
+          else {
+              if (SKIP_TUTORIAL) {
+                  DUNGEON_LOADER.loadLevel(DUNGEON_LOADER.levelOrder()[1]); // First Level
+              } else {
+                  DUNGEON_LOADER.loadLevel(DUNGEON_LOADER.levelOrder()[0]); // Tutorial
+              }
           }
         });
   }
