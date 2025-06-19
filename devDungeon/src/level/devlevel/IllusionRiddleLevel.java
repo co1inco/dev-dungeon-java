@@ -299,19 +299,27 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
     this.riddleHandler.onTick(isFirstTick);
   }
 
-  /** TODO: Refactor this method, and add JavaDoc */
-  public void lightTorch(DevDungeonRoom r, int i, boolean lit) {
-    if (r.torches()[i]
-            .fetch(TorchComponent.class)
-            .orElseThrow(
-                () -> MissingComponentException.build(r.torches()[i], TorchComponent.class))
-            .lit()
-        == lit) return;
-    r.torches()[i]
-        .fetch(InteractionComponent.class)
-        .orElseThrow(
-            () -> MissingComponentException.build(r.torches()[i], InteractionComponent.class))
-        .triggerInteraction(r.torches()[i], Game.hero().orElse(null));
+    /**
+     * Set the lit state of a torch
+     * @param r current room instance
+     * @param torchIndex index of the torch
+     * @param lit Whether the touch should be lit or unlit
+     */
+  public void lightTorch(DevDungeonRoom r, int torchIndex, boolean lit) {
+
+      Entity torch = r.torches()[torchIndex];
+      TorchComponent tc = torch
+          .fetch(TorchComponent.class)
+          .orElseThrow(() -> MissingComponentException.build(torch, TorchComponent.class));
+
+      if (tc.lit() == lit) {
+          return;
+      }
+
+      torch
+          .fetch(InteractionComponent.class)
+          .orElseThrow(() -> MissingComponentException.build(torch, InteractionComponent.class))
+          .triggerInteraction(r.torches()[torchIndex], Game.hero().orElse(null));
   }
 
   /**
