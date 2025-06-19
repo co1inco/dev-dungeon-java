@@ -64,7 +64,7 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
   public IllusionRiddleLevel(
       LevelElement[][] layout, DesignLabel designLabel, List<Coordinate> customPoints) {
     super(layout, designLabel, customPoints);
-    ((FogOfWarSystem) Game.systems().get(FogOfWarSystem.class)).active(true);
+//    ((FogOfWarSystem) Game.systems().get(FogOfWarSystem.class)).active(true);
     this.riddleHandler = new IllusionRiddleHandler(customPoints, this);
 
     this.rooms =
@@ -279,7 +279,7 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
     if (this.lastRoom != null && this.lastTorchState != this.lastRoom.isAnyTorchActive()) {
       this.lastTorchState = this.lastRoom.isAnyTorchActive();
       if (this.lastRoom.isAnyTorchActive()) {
-        FogOfWarSystem.VIEW_DISTANCE = 3;
+//        FogOfWarSystem.VIEW_DISTANCE = 3;
         ((FogOfWarSystem) Game.systems().get(FogOfWarSystem.class)).revert();
       } else {
         FogOfWarSystem.VIEW_DISTANCE = this.originalFogOfWarDistance;

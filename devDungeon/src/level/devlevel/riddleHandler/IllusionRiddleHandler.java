@@ -17,7 +17,7 @@ import utils.EntityUtils;
 
 public class IllusionRiddleHandler implements ITickable {
 
-  private static final int LAP_REWARD = 3;
+  private static final int LAP_REWARD = 0;
   private final TileLevel level;
   private final Coordinate[][] initTeleporterSpawns;
   private final Coordinate[][] lastTeleporterSpawns;
