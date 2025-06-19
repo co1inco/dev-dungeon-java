@@ -248,6 +248,30 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
         this.spawnChestsAndCauldrons();
     }
 
+    private void onRoomChanged() {
+        // Handle Mob AI (disable AI for mobs in other rooms, enable for mobs in current room)
+        if (this.lastRoom != null) {
+            this.lastRoom.mobAI(false);
+        }
+        if (this.getCurrentRoom() != null) {
+            this.getCurrentRoom().mobAI(true);
+        }
+
+        if (this.getCurrentRoom() != null) {
+            for (Entity mob : this.getCurrentRoom().mobs()) {
+                Consumer<Entity> fightAI =
+                    mob.fetch(AIComponent.class)
+                        .orElseThrow(() -> MissingComponentException.build(mob, AIComponent.class))
+                        .fightBehavior();
+                if (fightAI instanceof RangeAI rangeAI) {
+                    rangeAI.getSkill().setLastUsedToNow();
+                }
+            }
+        }
+
+        this.lastRoom = this.getCurrentRoom();
+    }
+
 
     @Override
     public void onTick(boolean isFirstTick) {
@@ -256,27 +280,7 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
         }
 
         if (this.lastRoom != this.getCurrentRoom()) {
-            // Handle Mob AI (disable AI for mobs in other rooms, enable for mobs in current room)
-            if (this.lastRoom != null) {
-                this.lastRoom.mobAI(false);
-            }
-            if (this.getCurrentRoom() != null) {
-                this.getCurrentRoom().mobAI(true);
-            }
-
-            if (this.getCurrentRoom() != null) {
-                for (Entity mob : this.getCurrentRoom().mobs()) {
-                    Consumer<Entity> fightAI =
-                        mob.fetch(AIComponent.class)
-                            .orElseThrow(() -> MissingComponentException.build(mob, AIComponent.class))
-                            .fightBehavior();
-                    if (fightAI instanceof RangeAI rangeAI) {
-                        rangeAI.getSkill().setLastUsedToNow();
-                    }
-                }
-            }
-
-            this.lastRoom = this.getCurrentRoom();
+            onRoomChanged();
         }
 
         // Anti Torch Logic
