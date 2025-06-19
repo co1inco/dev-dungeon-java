@@ -50,6 +50,8 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
       };
   private static final MonsterType BOSS_TYPE = MonsterType.ILLUSION_BOSS;
 
+  private static final int TELEPORTER_TINT_COLOR = 0x444444FF;
+
   // Spawn Points / Locations
   private final List<DevDungeonRoom> rooms;
   private final Coordinate levelBossSpawn;
@@ -196,10 +198,10 @@ public class IllusionRiddleLevel extends DevDungeonLevel implements ITickable {
       // Draw teleporter connections
       TeleporterSystem.getInstance().teleporter().stream()
           .map(Teleporter::from)
-          .forEach((tp) -> this.tileAt(tp).tintColor(0x444444FF)); // dark tint for teleporter
+          .forEach((tp) -> this.tileAt(tp).tintColor(TELEPORTER_TINT_COLOR));
       TeleporterSystem.getInstance().teleporter().stream()
           .map(Teleporter::to)
-          .forEach((tp) -> this.tileAt(tp).tintColor(0x444444FF)); // dark tint for teleporter
+          .forEach((tp) -> this.tileAt(tp).tintColor(TELEPORTER_TINT_COLOR));
 
       Entity b =
           EntityUtils.spawnBoss(
