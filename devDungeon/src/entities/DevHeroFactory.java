@@ -28,6 +28,9 @@ public class DevHeroFactory extends HeroFactory {
   private static Skill SKILL =
       new Skill(new BurningFireballSkill(SkillTools::cursorPositionAsPoint), 500L);
 
+  private static final Skill PROTECTOR_SKILL =
+      new Skill(new ProtectorSkill(SkillTools::heroPositionAsPoint), 1000L);
+
   /**
    * Update the skill used by the hero.
    *
@@ -67,10 +70,16 @@ public class DevHeroFactory extends HeroFactory {
     pc.registerCallback(
         KeyboardConfig.FIRST_SKILL.value(), heroEntity -> SKILL.execute(heroEntity));
 
+    pc.registerCallback(
+        KeyboardConfig.SECOND_SKILL.value(), heroEntity -> PROTECTOR_SKILL.execute(heroEntity));
+
     // Mouse movement
     if (ENABLE_MOUSE_MOVEMENT) {
       // Mouse Left Click
       registerMouseLeftClick(pc);
+
+//      pc.registerCallback(
+//          KeyboardConfig.MOUSE_SECOND_SKILL.value(), heroEntity -> PROTECTOR_SKILL.execute(heroEntity));
 
       // Mouse Movement (Right Click)
       pc.registerCallback(
