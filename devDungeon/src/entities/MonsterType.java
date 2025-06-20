@@ -32,6 +32,7 @@ import java.util.function.Supplier;
 import level.devlevel.BossLevel;
 import level.utils.LevelUtils;
 import task.tasktype.Quiz;
+import utils.ProtectorAI;
 
 public enum MonsterType {
   CHORT(
@@ -253,19 +254,16 @@ public enum MonsterType {
       MonsterIdleSound.BURP,
       0),
   PROTECTOR(
-      "Orc Shaman",
+      "Protector",
       "character/monster/orc_shaman",
       4,
       3.0f,
       0.1f,
       MonsterDeathSound.LOWER_PITCH,
-      () ->
-          new RangeAI(
-              3f,
-                  0f,
-                  new Skill(
-                  new FireballSkill(SkillTools::heroPositionAsPoint),
-      AIFactory.FIREBALL_COOL_DOWN)),
+      () -> new ProtectorAI(
+          3f,
+          0f,
+          new Skill(new FireballSkill(SkillTools::heroPositionAsPoint), AIFactory.FIREBALL_COOL_DOWN)),
       () -> new PatrolWalk(3f, 8, 5, PatrolWalk.MODE.BACK_AND_FORTH),
       () -> new RangeTransition(5, true),
       2,
