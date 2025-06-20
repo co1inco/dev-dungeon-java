@@ -18,32 +18,36 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static core.level.utils.LevelUtils.accessibleTilesInRange;
 
 public final class ProtectorAI implements Consumer<Entity>, ISkillUser {
 
     private final float attackRange;
-    private final float distance;
     private Skill skill;
-    private GraphPath<Tile> path;
+    Point nearestTargetPoint;
+
+    @FunctionalInterface
+    public interface SkillCreator {
+        Skill createSkill(Supplier<Point> targetPosition);
+    }
 
     /**
      * Attacks the nearest monster if he is within the given range between attackRange and distance. Otherwise,
      * it will move into that range.
      *
      * @param attackRange Maximal distance to monster in which the attack skill should be executed.
-     * @param distance Minimal distance to hero in which the attack skill should be executed.
-     * @param skill Skill to be used when an attack is performed.
+     * @param skillCreator Create a new skill
      */
-    public ProtectorAI(final float attackRange, final float distance, final Skill skill) {
-        if (attackRange <= distance || distance < 0) {
-            throw new IllegalArgumentException(
-                "attackRange must be greater than distance and distance must be 0 or greater than 0");
-        }
+    public ProtectorAI(final float attackRange, final SkillCreator skillCreator) {
         this.attackRange = attackRange;
-        this.distance = distance;
-        this.skill = skill;
+        this.skill = skillCreator.createSkill(new Supplier<Point>() {
+            @Override
+            public Point get() {
+                return nearestTargetPoint;
+            }
+        });
     }
 
     private Entity findNearestMob(Point targetPosition) {
@@ -97,11 +101,12 @@ public final class ProtectorAI implements Consumer<Entity>, ISkillUser {
         PositionComponent targetPs = targetEntity.fetch(PositionComponent.class).orElseThrow();
 
         if (ps.position().distance(targetPs.position()) < attackRange) {
+            nearestTargetPoint = targetPs.position();
             this.useSkill(this.skill, entity);
         }
         else {
 
-            path = LevelUtils.calculatePath(entity, targetEntity);
+            GraphPath<Tile> path = LevelUtils.calculatePath(entity, targetEntity);
             AIUtils.move(entity, path);
         }
     }

@@ -262,8 +262,7 @@ public enum MonsterType {
       MonsterDeathSound.LOWER_PITCH,
       () -> new ProtectorAI(
           3f,
-          0f,
-          new Skill(new FireballSkill(SkillTools::heroPositionAsPoint), AIFactory.FIREBALL_COOL_DOWN)),
+          s -> new Skill(new FireballSkill(s), AIFactory.FIREBALL_COOL_DOWN)),
       () -> new PatrolWalk(3f, 8, 5, PatrolWalk.MODE.BACK_AND_FORTH),
       () -> new RangeTransition(5, true),
       2,
