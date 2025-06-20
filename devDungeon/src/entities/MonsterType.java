@@ -251,6 +251,26 @@ public enum MonsterType {
       10,
       2 * Game.frameRate(),
       MonsterIdleSound.BURP,
+      0),
+  PROTECTOR(
+      "Orc Shaman",
+      "character/monster/orc_shaman",
+      4,
+      3.0f,
+      0.1f,
+      MonsterDeathSound.LOWER_PITCH,
+      () ->
+          new RangeAI(
+              3f,
+                  0f,
+                  new Skill(
+                  new FireballSkill(SkillTools::heroPositionAsPoint),
+      AIFactory.FIREBALL_COOL_DOWN)),
+      () -> new PatrolWalk(3f, 8, 5, PatrolWalk.MODE.BACK_AND_FORTH),
+      () -> new RangeTransition(5, true),
+      2,
+      2 * Game.frameRate(),
+      MonsterIdleSound.LOW_PITCH,
       0);
 
   private final String name;

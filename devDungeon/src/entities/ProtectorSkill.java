@@ -50,19 +50,6 @@ public final class ProtectorSkill implements Consumer<Entity> {
         this.targetSelection = targetSelection;
     }
 
-    private static Supplier<Point> getInitialPosition(final Supplier<Point> targetPosition) {
-        int xOffset = ILevel.RANDOM.nextInt(9);
-        int yOffset = ILevel.RANDOM.nextInt(9);
-        Point p = targetPosition.get();
-
-        return new Supplier<Point>() {
-            @Override
-            public Point get() {
-              return new Point(p.x + xOffset, p.y + yOffset);
-            }
-        };
-    }
-
     @Override
     public void accept(Entity entity) {
         int xOffset = ILevel.RANDOM.nextInt(3);
@@ -70,7 +57,7 @@ public final class ProtectorSkill implements Consumer<Entity> {
         Point p = targetSelection.get();
         Point randomPoint = new Point(p.x + xOffset, p.y + yOffset);
 
-        MonsterType monster = MonsterType.ORC_WARRIOR;
+        MonsterType monster = MonsterType.PROTECTOR;
         EntityUtils.spawnMonster(monster, randomPoint);
     }
 
