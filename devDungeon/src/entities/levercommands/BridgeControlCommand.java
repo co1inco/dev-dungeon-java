@@ -2,10 +2,14 @@ package entities.levercommands;
 
 import core.Game;
 import core.level.Tile;
+import core.level.elements.tile.PitTile;
 import core.level.utils.Coordinate;
 import core.level.utils.LevelElement;
 import systems.FogOfWarSystem;
 import utils.ICommand;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * The BridgeControlCommand class is responsible for controlling the bridge in the Bridge Guard
@@ -28,6 +32,18 @@ public class BridgeControlCommand implements ICommand {
     this.bottomRight = bottomRight;
   }
 
+  private void foreachPit(Consumer<PitTile> predicate) {
+      for (int x = this.topLeft.x; x <= this.bottomRight.x; x++) {
+          for (int y = this.bottomRight.y; y <= this.topLeft.y; y++) {
+              Tile tile = Game.currentLevel().tileAt(new Coordinate(x, y));
+              if (!(tile instanceof PitTile pit)) // (tile is not PitTile pitTile) :((
+                  return;
+
+              predicate.accept(pit);
+          }
+      }
+  }
+
   /**
    * Raises the bridge. By opening the pits, the bridge is raised.
    *
@@ -36,17 +52,7 @@ public class BridgeControlCommand implements ICommand {
    */
   @Override
   public void execute() {
-      // TODO: Implement bridge raising
-      for (int x = this.topLeft.x; x <= this.bottomRight.x; x++) {
-          for (int y = this.bottomRight.y; y <= this.topLeft.y; y++) {
-              Tile tile = Game.currentLevel().tileAt(new Coordinate(x, y));
-              if (tile == null) return;
-
-//              Game.currentLevel().changeTileElementType(tile, LevelElement.FLOOR);
-//              Tile newTile = Game.currentLevel().tileAt(new Coordinate(x, y));
-//              ((FogOfWarSystem) Game.systems().get(FogOfWarSystem.class)).updateTile(tile, newTile);
-          }
-      }
+      foreachPit(PitTile::open);
   }
 
   /**
@@ -57,6 +63,6 @@ public class BridgeControlCommand implements ICommand {
    */
   @Override
   public void undo() {
-    // TODO: Implement bridge lowering
+      foreachPit(PitTile::close);
   }
 }
