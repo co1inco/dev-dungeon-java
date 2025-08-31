@@ -12,6 +12,8 @@ import core.level.utils.Coordinate;
 import core.utils.Point;
 import core.utils.components.MissingComponentException;
 import entities.BurningFireballSkill;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -221,6 +223,15 @@ public class TorchRiddleRiddleHandler implements ITickable {
    * @return The sum of the values of all lit torches in the game.
    */
   private int getSumOfLitTorches() {
-    throw new UnsupportedOperationException("Not implemented yet.");
+//    return this.riddleSearchedSum; // this is the easy way -.-
+
+      return (int)Game
+          .entityStream(Collections.singleton(TorchComponent.class)) // [ ... ] <- c# collection initializer :(
+          .map(x -> x.fetch(TorchComponent.class).orElseThrow())
+          .filter(TorchComponent::lit)
+          // not sure why i should filter values <= 0
+//          .filter(x -> x.value() > 0)
+          .mapToInt(TorchComponent::value)
+          .sum();
   }
 }
